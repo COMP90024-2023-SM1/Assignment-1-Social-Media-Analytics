@@ -1,5 +1,6 @@
 import re
 import json
+import ijson
 
 def extract_location(tweet):
     """
