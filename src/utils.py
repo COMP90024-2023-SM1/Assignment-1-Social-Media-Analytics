@@ -38,3 +38,19 @@ def load_tweet(file_path: str):
     with open(file_path, 'r') as tweet_file:
         tweet = json.load(tweet_file)
         return tweet
+
+def print_result_city_count(city_counter):
+    """
+    Print result for each capital cities
+
+    Arguments:
+    city_counter --- counter for the cities
+    """
+
+def print_most_common_user(user_counter):
+    """
+    Print result for common user counting
+
+    Arguments:
+    user_counter --- counter for the users
+    """
