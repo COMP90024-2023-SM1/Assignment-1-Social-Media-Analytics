@@ -20,8 +20,8 @@ def main(geo_file_path, twitter_data_path):
     RANK = COMM.Get_rank()
 
     if RANK == 0:
+        # Read location data from file
         location_dict = load_geo_location(geo_file_path)
-    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')

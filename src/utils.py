@@ -2,6 +2,13 @@ import re
 import json
 import ijson
 
+def create_chunk(file_path: str, n_rank):
+    """
+    Divide the dataset into chunks for each individual process
+    """
+    with open(file_path, 'rb') as file:
+        
+
 def extract_location(tweet):
     """
     Extract the location of a given tweet
