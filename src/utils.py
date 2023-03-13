@@ -2,12 +2,39 @@ import re
 import json
 import ijson
 
-def create_chunk(file_path: str, n_rank):
+def create_block(file_path: str, dataset_size, size_per_core: int):
     """
-    Divide the dataset into chunks for each individual process
+    Divide the dataset into block for each individual process
+
+    Arguments:
+    file_path --- path to the dataset
+    dataset_size --- size of the dataset
+    size_per_core --- allocated size for each core
     """
-    with open(file_path, 'rb') as file:
-        
+    with open(file_path, 'r', encoding='utf-8') as f:
+
+        # Obtain the current position in the file stream
+        block_end = f.tell()
+        while True:
+            block_start = block_end
+
+            if f.seek(f.tell() + int(size_per_core)) >= dataset_size:
+                block_end = dataset_size
+                yield block_start, block_end
+                break
+            line = f.readline()
+
+            # Keep reading until a tweet record is complete
+            while True:
+                if line == '  },\n' or line == '  }\n':
+                    block_end = f.tell()
+                    break
+                line = f.readline()
+            if block_end > dataset_size:
+                block_end = dataset_size
+            yield block_start, block_end
+            if block_end == dataset_size:
+                break
 
 def extract_location(tweet):
     """
