@@ -1,2 +1,4 @@
 
 .DS_Store
+src/__pycache__/utils.cpython-39.pyc
+*.pyc
