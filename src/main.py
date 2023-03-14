@@ -23,10 +23,10 @@ def main(geo_file_path, twitter_data_path):
     if RANK == 0:
         # Read location data from file
         location_dict = load_geo_location(geo_file_path)
-        dataset_size = os.path.getsize(twitter_data_path)
-        size_per_core = dataset_size / SIZE
 
         # Divide tweet data into blocks for each core
+        dataset_size = os.path.getsize(twitter_data_path)
+        size_per_core = dataset_size / SIZE
         block_list = []
         for block_start, block_end in create_block(twitter_data_path, dataset_size, size_per_core):
             block_list.append({"block_start": block_start, "block_end": block_end})
