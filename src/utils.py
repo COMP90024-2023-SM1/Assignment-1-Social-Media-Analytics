@@ -44,7 +44,7 @@ def extract_location(tweet):
     tweet --- tweet in JSON format
     """
     location = tweet['includes']['places'][0]['full_name']
-    return location
+    return location.split(',')[0].lower()
 
 
 def extract_user(tweet):
@@ -59,27 +59,40 @@ def extract_user(tweet):
 
 def load_geo_location(file_path: str):
     """
-    Load the file containing geo location of Australia
+    This function returns a dictionary of the area names in each
+    greater capital cities in Australia
 
     Arguments:
     file_path --- path to the file
     """
-    with open(file_path, 'r') as geo_file:
-        geo_location = json.load(geo_file)
-        return geo_location
+    location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[]}
+    with open('../data/sal.json', 'rb') as f:
+        for key, value in json.load(f).items():
+
+            # Check if the location is within a greater capital city
+            if value['gcc'] in location_dict.keys():
+                location_dict[value['gcc']].append(key) 
+
+    return location_dict
 
 def load_tweet(file_path: str):
     with open(file_path, 'r') as tweet_file:
         tweet = json.load(tweet_file)
         return tweet
 
-def print_result_city_count(city_counter):
+def print_result_gcc_count(gcc_counter):
     """
     Print result for each capital cities
 
     Arguments:
-    city_counter --- counter for the cities
+    gcc_counter --- counter for the cities
     """
+    long_name = {'1gsyd': '(Greater Sydney)', '2gmel': '(Greater Melbourne)',
+                 '3gbri': '(Greater Brisbane)', '4gade': '(Greater Adelaide)',
+                 '5gper': '(Greater Perth)', '6ghob': '(Greater Hobart)'}
+    print(f"{'Greater Capital City': <30}{'Number of Tweets Made': >20}")
+    for gcc, tweet_count in gcc_counter.items():
+        print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
 
 def print_most_common_user(user_counter):
     """
@@ -88,3 +101,9 @@ def print_most_common_user(user_counter):
     Arguments:
     user_counter --- counter for the users
     """
+    print(f"{'Rank': <8}{'Author ID': <30}{'Number of Tweets Made': ^15}")
+    rank = 1
+    user_counter = user_counter.most_common(10)
+    for author_id, tweet_count in user_counter:
+        print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
+        rank += 1

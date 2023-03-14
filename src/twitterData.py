@@ -1,81 +1,72 @@
-import json
 import re
+import json
+import ijson
 
-#class twitterData:
- #   """ Data class for twitter data """
+from collections import Counter
+from utils import extract_location, extract_user, load_geo_location
 
- #   def __init__(self, data: str):
-        
-class twitterData:
-    """ Data class for twitter data """
-    def __init__(self, data):
-        self._id = data['_id']
-        self._rev = data['_rev']
-        self.author_id = data['data']['author_id']
-        self.conversation_id = data['data']['conversation_id']
-        self.created_at = data['data']['created_at']
-        self.entities = data['data']['entities']
-        self.geo = data['data']['geo']
-        self.lang = data['data']['lang']
-        self.public_metrics = data['data']['public_metrics']
-        self.text = data['data']['text']
-        self.sentiment = data['data']['sentiment']
-        
-        # extract nested properties
-        if 'urls' in self.entities:
-            self.urls = self.entities['urls']
-        else:
-            self.urls = None
-        
-        if 'mentions' in self.entities:
-            self.mentions = self.entities['mentions']
-        else:
-            self.mentions = None
-        
-        if 'places' in data['includes']:
-            self.places = data['includes']['places']
-        else:
-            self.places = None
-    
-    # getter methods
-    def get_id(self):
-        return self._id
-    
-    def get_rev(self):
-        return self._rev
-    
-    def get_author_id(self):
-        return self.author_id
-    
-    def get_conversation_id(self):
-        return self.conversation_id
-    
-    def get_created_at(self):
-        return self.created_at
-    
-    def get_entities(self):
-        return self.entities
-    
-    def get_geo(self):
-        return self.geo
-    
-    def get_lang(self):
-        return self.lang
-    
-    def get_public_metrics(self):
-        return self.public_metrics
-    
-    def get_text(self):
-        return self.text
-    
-    def get_sentiment(self):
-        return self.sentiment
-    
-    def get_urls(self):
-        return self.urls
-    
-    def get_mentions(self):
-        return self.mentions
-    
-    def get_places(self):
-        return self.places
+
+class twitterData():
+
+    def __init__(self):
+        """
+        Initialise tweeter data object for each worker process with 
+        location counter and user tweet counter
+        """
+
+        self.location_counter = Counter()
+        self.user_counter = Counter()
+
+    def process_tweet(self, tweet, location_dict):
+        """
+        This function takes a tweet and extract its location and user
+        ID and perform counting
+
+        Arguments:
+        tweet --- a single tweet record in JSON format
+        """
+        gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob']
+        tweet_location = extract_location(tweet)
+        for gcc, location in location_dict.items():
+            if tweet_location in location:
+                self.location_counter[gcc] += 1
+
+        tweet_user = extract_user(tweet)
+        self.user_counter[tweet_user] += 1
+
+    def tweet_processer(self, file_path, geo_file_path, block_start, block_end):
+        """
+        Function that allows individual worker process to read and
+        process tweets
+
+        Arguments:
+        file_path --- path to the dataset
+        block_start --- byte starting position allocated for the worker process
+        block_end --- byte ending position allocated for the worker process
+        """
+        location_dict = load_geo_location(geo_file_path)
+
+        with open(file_path, 'rb') as file:
+            one_tweet = ''
+            if block_start == 0:
+                block_start = 4
+            
+            file.seek(block_start)
+            while file.tell() != block_end:
+                line = file.readline().decode('utf-8')
+
+                # If reached the end of a tweet record
+                if line == '  },\n' or line == '  }\n':
+                    one_tweet += line.split(',')[0]
+                    self.process_tweet(json.loads(one_tweet), location_dict)
+
+                    # Reset tweet after processed
+                    one_tweet = ''
+                else:
+                    one_tweet += line
+                    
+    def get_process_result(self):
+        """
+        This function returns the results in dictionary form
+        """
+        return {"gcc_count": self.location_counter, "user_count": self.user_counter}
