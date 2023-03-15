@@ -44,7 +44,7 @@ def extract_location(tweet):
     tweet --- tweet in JSON format
     """
     location = tweet['includes']['places'][0]['full_name']
-    return location.split(',')[0].lower()
+    return location.lower()#.split(',')[0].lower()
 
 
 def extract_user(tweet):
@@ -66,12 +66,20 @@ def load_geo_location(file_path: str):
     file_path --- path to the file
     """
     location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[]}
+    state_abrv_dict = {'(nsw)': 'New South Wales', '(vic.)': 'Victoria', '(qld)': 'Queensland', 
+                       '(sa)': 'South Australia', '(wa)': 'Western Australia', '(tas.)': 'Tasmania'}
     with open('../data/sal.json', 'rb') as f:
-        for key, value in json.load(f).items():
+        for location_name, value in json.load(f).items():
 
             # Check if the location is within a greater capital city
             if value['gcc'] in location_dict.keys():
-                location_dict[value['gcc']].append(key) 
+                if location_name.split(' ')[-1] in state_abrv_dict.keys():
+                    new_name = location_name[0:len(location_name) - len(location_name.split(' ')[-1]) - 1]
+                    new_name = new_name + ', ' + state_abrv_dict[location_name.split(' ')[-1]]
+                    location_dict[value['gcc']].append(new_name)
+                    print(new_name)
+                else:
+                    location_dict[value['gcc']].append(location_name) 
 
     return location_dict
 
