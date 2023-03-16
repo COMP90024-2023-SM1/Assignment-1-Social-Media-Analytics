@@ -5,7 +5,7 @@ import numpy as np
 
 from mpi4py import MPI
 from collections import Counter
-from utils import extract_location, extract_user, load_geo_location, load_tweet, create_block, print_most_common_user, print_result_gcc_count
+from utils import extract_location, extract_user, load_geo_location, load_tweet, create_block, print_most_common_user, print_result_gcc_count, print_most_cities_count
 from twitterData import twitterData
 
 start_time = time.time()
@@ -52,17 +52,26 @@ def main(geo_file_path, twitter_data_path):
     if RANK == 0:
         gcc_count_combined = Counter()
         user_count_combined = Counter()
+        user_gcc_count_combined = dict()
 
         # Sum up the counter from each process
         for i in combined_results:
             gcc_count_combined += i['gcc_count']
             user_count_combined += i['user_count']
+            gcc = list(i['gcc_count'].keys())[0]
+            users = list(dict(i['user_count']).keys())
+            for user in users:
+                if user not in user_gcc_count_combined.keys():
+                    user_gcc_count_combined[user] = {}
+                user_gcc_count_combined[user][gcc] = i['user_count'][user]
 
         print("\n=================== Results ===================\n")
         print("Total Number of Tweets in Various Capital Cities")
         print_result_gcc_count(gcc_count_combined)
-        print("\nTop 10 Tweeterss")
+        print("\nTop 10 Tweeters")
         print_most_common_user(user_count_combined)
+        print("\nTop 10 Number of Unique City Locations and #Tweets")
+        print_most_cities_count(user_gcc_count_combined)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')

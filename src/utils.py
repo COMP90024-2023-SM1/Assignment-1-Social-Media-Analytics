@@ -68,7 +68,7 @@ def load_geo_location(file_path: str):
     location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[]}
     state_abrv_dict = {'(nsw)': 'New South Wales', '(vic.)': 'Victoria', '(qld)': 'Queensland', 
                        '(sa)': 'South Australia', '(wa)': 'Western Australia', '(tas.)': 'Tasmania'}
-    with open('../data/sal.json', 'rb') as f:
+    with open(file_path, 'rb') as f:
         for location_name, value in json.load(f).items():
 
             # Check if the location is within a greater capital city
@@ -114,4 +114,28 @@ def print_most_common_user(user_counter):
     user_counter = user_counter.most_common(10)
     for author_id, tweet_count in user_counter:
         print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
+        rank += 1
+
+def print_most_cities_count(cities_counter):
+
+    # define a custom key function to sort by number of items and sum of nested dictionary values
+    def sort_key(item):
+        return (-len(item[1]), -sum(item[1].values()))
+
+    # sort the dictionary by custom key function and take the top 5 items
+    sorted_dict_items = dict(sorted(cities_counter.items(), key=sort_key)[:10])
+    # iterate through the dictionary using a for loop
+    rank = 1
+    print(f"{'Rank': <8}{'Author ID': <30}{'Number of Unique City Locations and #Tweets': ^15}")
+    for author_id, value in sorted_dict_items.items():
+        total = sum(value.values())
+        str_breakdown = ''
+        i = 0
+        for place, number in value.items():
+            if i == 0:
+                str_breakdown = str_breakdown + str(number) + str(place)
+            else:
+                str_breakdown = str_breakdown + ',' + str(number) + str(place)
+            i += 1
+        print(f"{'#' + str(rank) : <8}{author_id : <30}{str(len(value)) + '(#' + str(total) + ' tweets - '}{str_breakdown + ')'}")
         rank += 1
