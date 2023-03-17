@@ -16,6 +16,7 @@ class twitterData():
 
         self.location_counter = Counter()
         self.user_counter = Counter()
+        self.city_counter = dict()
 
     def process_tweet(self, tweet, location_dict):
         """
@@ -25,15 +26,23 @@ class twitterData():
         Arguments:
         tweet --- a single tweet record in JSON format
         """
+
+        tweet_user = extract_user(tweet)
+        self.user_counter[tweet_user] += 1
+        if tweet_user not in self.city_counter.keys():
+            self.city_counter[tweet_user] = dict()
+
         gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob']
         tweet_location = extract_location(tweet)
         for gcc, location in location_dict.items():
             if tweet_location in location or tweet_location.split(',')[0] in location:
                 self.location_counter[gcc] += 1
+                if gcc[1:] not in self.city_counter[tweet_user].keys():
+                    self.city_counter[tweet_user][gcc[1:]] = 1
+                else:
+                    self.city_counter[tweet_user][gcc[1:]] += 1
                 break
 
-        tweet_user = extract_user(tweet)
-        self.user_counter[tweet_user] += 1
 
     def tweet_processer(self, file_path, geo_file_path, block_start, block_end):
         """
@@ -70,4 +79,4 @@ class twitterData():
         """
         This function returns the results in dictionary form
         """
-        return {"gcc_count": self.location_counter, "user_count": self.user_counter}
+        return {"gcc_count": self.location_counter, "user_count": self.user_counter, "city_counter": self.city_counter}

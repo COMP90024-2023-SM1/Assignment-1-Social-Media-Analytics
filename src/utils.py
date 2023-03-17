@@ -77,7 +77,7 @@ def load_geo_location(file_path: str):
                     new_name = location_name[0:len(location_name) - len(location_name.split(' ')[-1]) - 1]
                     new_name = new_name + ', ' + state_abrv_dict[location_name.split(' ')[-1]]
                     location_dict[value['gcc']].append(new_name)
-                    print(new_name)
+                    #print(new_name)
                 else:
                     location_dict[value['gcc']].append(location_name) 
 
@@ -116,14 +116,14 @@ def print_most_common_user(user_counter):
         print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
         rank += 1
 
-def print_most_cities_count(cities_counter):
+def print_most_cities_count(city_counter):
 
     # define a custom key function to sort by number of items and sum of nested dictionary values
     def sort_key(item):
         return (-len(item[1]), -sum(item[1].values()))
 
-    # sort the dictionary by custom key function and take the top 5 items
-    sorted_dict_items = dict(sorted(cities_counter.items(), key=sort_key)[:10])
+    # sort the dictionary by custom key function and take the top 10 items
+    sorted_dict_items = dict(sorted(city_counter.items(), key=sort_key)[:10])
     # iterate through the dictionary using a for loop
     rank = 1
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Unique City Locations and #Tweets': ^15}")

@@ -52,18 +52,13 @@ def main(geo_file_path, twitter_data_path):
     if RANK == 0:
         gcc_count_combined = Counter()
         user_count_combined = Counter()
-        user_gcc_count_combined = dict()
+        city_count_combined = dict()
 
         # Sum up the counter from each process
         for i in combined_results:
             gcc_count_combined += i['gcc_count']
             user_count_combined += i['user_count']
-            gcc = list(i['gcc_count'].keys())[0]
-            users = list(dict(i['user_count']).keys())
-            for user in users:
-                if user not in user_gcc_count_combined.keys():
-                    user_gcc_count_combined[user] = {}
-                user_gcc_count_combined[user][gcc] = i['user_count'][user]
+            city_count_combined.update(i['city_counter'])
 
         print("\n=================== Results ===================\n")
         print("Total Number of Tweets in Various Capital Cities")
@@ -71,7 +66,7 @@ def main(geo_file_path, twitter_data_path):
         print("\nTop 10 Tweeters")
         print_most_common_user(user_count_combined)
         print("\nTop 10 Number of Unique City Locations and #Tweets")
-        print_most_cities_count(user_gcc_count_combined)
+        print_most_cities_count(city_count_combined)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')
