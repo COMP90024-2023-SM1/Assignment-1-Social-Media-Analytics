@@ -67,6 +67,9 @@ def main(geo_file_path, twitter_data_path):
         print_most_common_user(user_count_combined)
         print("\nTop 10 Number of Unique City Locations and #Tweets")
         print_most_cities_count(city_count_combined)
+        run_time = time.time() - start_time
+        print('\nPROGRAM RUN TIME: ' + str(run_time))
+        
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')
