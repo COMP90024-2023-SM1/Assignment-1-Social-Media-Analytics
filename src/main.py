@@ -16,14 +16,14 @@ RANK = COMM.Get_rank()
 def main(geo_file_path, twitter_data_path):
     """
     Arguments:
-    
-    geo_file_path: path of Australia geo location code data
-    twitter_data_path: path of twitter data files
+    geo_file_path --- path of Australia geo location code data
+    twitter_data_path --- path of twitter data files
     """
     # Initialise twitter class for the current process
     twitter_data = twitterData()
 
     if RANK == 0:
+        # Equally split dataset to each process
         dataset_size = os.path.getsize(twitter_data_path)
         # print("Dataset file total size = " + str(dataset_size))
         size_per_core = dataset_size / SIZE
@@ -47,8 +47,10 @@ def main(geo_file_path, twitter_data_path):
                                  scattered_data['block_end'])
     
     processed_results = twitter_data.get_process_result()
+    # Gather result from each process
     combined_results = COMM.gather(processed_results, root=0)
     
+    # Add all the calculation together in process 0 and print result
     if RANK == 0:
         gcc_count_combined = Counter()
         user_count_combined = Counter()
@@ -61,10 +63,10 @@ def main(geo_file_path, twitter_data_path):
             city_count_combined.update(i['city_counter'])
 
         print("\n=================== Results ===================\n")
-        print("Total Number of Tweets in Various Capital Cities")
-        print_result_gcc_count(gcc_count_combined)
         print("\nTop 10 Tweeters")
         print_most_common_user(user_count_combined)
+        print("Total Number of Tweets in Various Capital Cities")
+        print_result_gcc_count(gcc_count_combined)
         print("\nTop 10 Number of Unique City Locations and #Tweets")
         print_most_cities_count(city_count_combined)
         run_time = time.time() - start_time

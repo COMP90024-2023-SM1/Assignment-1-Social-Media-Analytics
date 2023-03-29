@@ -18,6 +18,8 @@ def create_block(file_path: str, dataset_size, size_per_core: int):
         while True:
             block_start = block_end
 
+            # Directly jump to the end of size allocation and check if position reach the end
+            # of the dataset
             if f.seek(f.tell() + int(size_per_core)) >= dataset_size:
                 block_end = dataset_size
                 yield block_start, block_end
@@ -25,6 +27,7 @@ def create_block(file_path: str, dataset_size, size_per_core: int):
             line = f.readline()
 
             # Keep reading until a tweet record is complete
+            # Prevent reading stop in the middle of a tweet record
             while True:
                 if line == '  },\n' or line == '  }\n':
                     block_end = f.tell()
@@ -32,6 +35,8 @@ def create_block(file_path: str, dataset_size, size_per_core: int):
                 line = f.readline()
             if block_end > dataset_size:
                 block_end = dataset_size
+
+            # Add result to a generator    
             yield block_start, block_end
             if block_end == dataset_size:
                 break
