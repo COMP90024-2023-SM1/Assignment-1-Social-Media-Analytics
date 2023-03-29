@@ -63,9 +63,9 @@ def main(geo_file_path, twitter_data_path):
             city_count_combined.update(i['city_counter'])
 
         print("\n=================== Results ===================\n")
-        print("\nTop 10 Tweeters")
+        print("Top 10 Tweeters")
         print_most_common_user(user_count_combined)
-        print("Total Number of Tweets in Various Capital Cities")
+        print("\nTotal Number of Tweets in Various Capital Cities")
         print_result_gcc_count(gcc_count_combined)
         print("\nTop 10 Number of Unique City Locations and #Tweets")
         print_most_cities_count(city_count_combined)
