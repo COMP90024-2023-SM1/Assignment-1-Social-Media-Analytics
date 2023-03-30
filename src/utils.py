@@ -70,9 +70,10 @@ def load_geo_location(file_path: str):
     Arguments:
     file_path --- path to the file
     """
-    location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[]}
+    location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[], '7gdar':[]}
     state_abrv_dict = {'(nsw)': 'new south wales', '(vic.)': 'victoria', '(qld)': 'queensland', 
-                       '(sa)': 'south australia', '(wa)': 'western australia', '(tas.)': 'tasmania'}
+                       '(nt)': 'northern territory', '(sa)': 'south australia', '(wa)': 'western australia', 
+                       '(tas.)': 'tasmania'}
     with open(file_path, 'rb') as f:
         for location_name, value in json.load(f).items():
 
@@ -105,9 +106,10 @@ def print_result_gcc_count(gcc_counter):
     """
     long_name = {'1gsyd': '(Greater Sydney)', '2gmel': '(Greater Melbourne)',
                  '3gbri': '(Greater Brisbane)', '4gade': '(Greater Adelaide)',
-                 '5gper': '(Greater Perth)', '6ghob': '(Greater Hobart)'}
+                 '5gper': '(Greater Perth)', '6ghob': '(Greater Hobart)',
+                 '7gdar': '(Greater Darwin)'}
     print(f"{'Greater Capital City': <30}{'Number of Tweets Made': >20}")
-    for gcc, tweet_count in gcc_counter.items():
+    for gcc, tweet_count in gcc_counter.most_common():
         print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
 
 def print_most_common_user(user_counter):
