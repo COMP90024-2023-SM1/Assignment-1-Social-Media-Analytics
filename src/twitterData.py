@@ -32,7 +32,7 @@ class twitterData():
         if tweet_user not in self.city_counter.keys():
             self.city_counter[tweet_user] = dict()
 
-        gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob']
+        gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
         tweet_location = extract_location(tweet)
         for gcc, location in location_dict.items():
             if tweet_location in location or tweet_location.split(',')[0] in location:
@@ -75,8 +75,10 @@ class twitterData():
                 else:
                     one_tweet += line
                     
-    def get_process_result(self):
+    def get_processed_result(self):
         """
         This function returns the results in dictionary form
         """
-        return {"gcc_count": self.location_counter, "user_count": self.user_counter, "city_counter": self.city_counter}
+        return {"gcc_count": self.location_counter, 
+                "user_count": self.user_counter, 
+                "city_counter": self.city_counter}

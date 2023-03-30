@@ -46,9 +46,9 @@ def main(geo_file_path, twitter_data_path):
                                  scattered_data['block_start'], 
                                  scattered_data['block_end'])
     
-    processed_results = twitter_data.get_process_result()
+    processed_results = twitter_data.get_processed_result()
     # Gather result from each process
-    combined_results = COMM.gather(processed_results, root=0)
+    combined_results = COMM.gather(processed_results, root = 0)
     
     # Add all the calculation together in process 0 and print result
     if RANK == 0:
