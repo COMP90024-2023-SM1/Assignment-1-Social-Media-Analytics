@@ -49,7 +49,9 @@ def main(geo_file_path, twitter_data_path):
     processed_results = twitter_data.get_processed_result()
     # Gather result from each process
     combined_results = COMM.gather(processed_results, root = 0)
-    
+
+    print("Hello world from process", RANK, "of",SIZE)
+
     # Add all the calculation together in process 0 and print result
     if RANK == 0:
         gcc_count_combined = Counter()
@@ -60,7 +62,12 @@ def main(geo_file_path, twitter_data_path):
         for i in combined_results:
             gcc_count_combined += i['gcc_count']
             user_count_combined += i['user_count']
-            city_count_combined.update(i['city_counter'])
+            for key, value in i['city_counter'].items():
+                if key in city_count_combined:
+                    for subkey, subvalue in value.items():
+                        city_count_combined[key][subkey] += subvalue
+                else:
+                    city_count_combined[key] = value
 
         print("\n=================== Results ===================\n")
         print("Top 10 Tweeters")
@@ -74,6 +81,9 @@ def main(geo_file_path, twitter_data_path):
         
 
 if __name__ == "__main__":
+    # To run the code, please use the following command
+    # cd src
+    # mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/twitter-data-small.json
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')
     parser.add_argument('-dataset', type = str, help = 'Path to twitter dataset')
     parser.add_argument('-location', type = str, help = 'Path to a list of location code')
