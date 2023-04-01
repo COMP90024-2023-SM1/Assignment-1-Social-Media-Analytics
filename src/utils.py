@@ -1,9 +1,5 @@
 import json
-
-STATE_ABRV_DICT = {'(nsw)': 'new south wales', '(vic.)': 'victoria', '(qld)': 'queensland', 
-                       '(nt)': 'northern territory', '(sa)': 'south australia', '(wa)': 'western australia', 
-                       '(tas.)': 'tasmania'}
-
+import re
 
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
@@ -52,7 +48,7 @@ def extract_location(tweet):
     tweet --- tweet in JSON format
     """
     location = tweet['includes']['places'][0]['full_name']
-    return location.lower()#.split(',')[0].lower()
+    return reformat_string(location)
 
 
 def extract_user(tweet):
@@ -72,7 +68,6 @@ def load_geo_location(file_path: str):
 
     Arguments:
     file_path --- path to the file
-    state_abrv_dict --- dictionary mapping state abbreviations to full names
     """
     location_dict = {'1gsyd': set(), '2gmel': set(), '3gbri': set(), '4gade': set(), '5gper': set(), '6ghob': set(), '7gdar': set()}
  
@@ -80,10 +75,7 @@ def load_geo_location(file_path: str):
         for location_name, value in json.load(f).items():
             gcc = value['gcc']
             if gcc in location_dict:
-                if ' - ' in location_name:
-                    new_name = location_name.split('(')[1].split(' - ')[0]
-                else:
-                    new_name = location_name
+                new_name = reformat_string(location_name)
                 location_dict[gcc].add(new_name)
     return location_dict
 
@@ -133,7 +125,7 @@ def print_most_cities_count(city_counter):
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Unique City Locations and #Tweets': ^15}")
     for rank, (author_id, value) in enumerate(sorted_dict_items.items(), start=1):
         total = sum(value.values())
-        str_breakdown = ','.join(f"{number}{place}" for place, number in value.items())
+        str_breakdown = ','.join(f"{number}{place[1:]}" for place, number in value.items())
         print(f"{'#' + str(rank): <8}{author_id: <30}{str(len(value))}(#{total} tweets - {str_breakdown})")
 
 
@@ -142,3 +134,15 @@ def fix_json(txt):
     if txt[0] != '{':
         return txt[1:]
     return txt
+
+def reformat_string(txt):
+    match = re.search(r'[^\w\s]', txt)
+    if match:
+        result = txt[:match.start()]
+    else:
+        result = txt
+    return result.rstrip().lower()
+
+def is_end_of_tweet_record(line):
+    line = line.replace(" ", "")
+    return line == '},\n' or line == '}\n'

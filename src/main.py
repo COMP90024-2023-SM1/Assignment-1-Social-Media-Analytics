@@ -4,7 +4,7 @@ import time
 
 from mpi4py import MPI
 from collections import Counter, defaultdict
-from utils import extract_location, extract_user, load_geo_location, load_tweet, create_block, print_most_common_user, print_result_gcc_count, print_most_cities_count
+from utils import *
 from twitterData import twitterData
 
 start_time = time.time()

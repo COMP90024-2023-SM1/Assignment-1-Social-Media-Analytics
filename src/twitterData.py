@@ -1,7 +1,7 @@
 import json
 
 from collections import Counter, defaultdict
-from utils import extract_location, extract_user, load_geo_location, fix_json
+from utils import *
 
 
 class twitterData():
@@ -30,11 +30,10 @@ class twitterData():
 
         # gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
         tweet_location = extract_location(tweet)
-        city = tweet_location.split(',')[0]
         for gcc, location in location_dict.items():
-            if tweet_location in location or city in location:
+            if tweet_location in location:
                 self.location_counter[gcc] += 1
-                self.city_counter[tweet_user][gcc[1:]] += 1
+                self.city_counter[tweet_user][gcc] += 1
                 break
 
 
