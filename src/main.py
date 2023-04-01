@@ -37,6 +37,7 @@ def main(geo_file_path, twitter_data_path):
 
     # Distribute data blocks to different cores
     scattered_data = COMM.scatter(block_list, root = 0)
+    print("Hello world from process", RANK + 1, "of",SIZE)
     print("RANK #" + str(RANK) + " responsible for block between byte " + str(
         scattered_data['block_start']) + " and byte " + str(scattered_data['block_end']))
 
@@ -48,8 +49,6 @@ def main(geo_file_path, twitter_data_path):
     processed_results = twitter_data.get_processed_result()
     # Gather result from each process
     combined_results = COMM.gather(processed_results, root = 0)
-
-    print("Hello world from process", RANK, "of",SIZE)
 
     # Add all the calculation together in process 0 and print result
     if RANK == 0:
