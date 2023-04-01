@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 from mpi4py import MPI
-from collections import Counter
+from collections import Counter, defaultdict
 from utils import extract_location, extract_user, load_geo_location, load_tweet, create_block, print_most_common_user, print_result_gcc_count, print_most_cities_count
 from twitterData import twitterData
 
@@ -56,7 +56,7 @@ def main(geo_file_path, twitter_data_path):
     if RANK == 0:
         gcc_count_combined = Counter()
         user_count_combined = Counter()
-        city_count_combined = dict()
+        city_count_combined = defaultdict(int)
 
         # Sum up the counter from each process
         for i in combined_results:
@@ -84,6 +84,7 @@ if __name__ == "__main__":
     # To run the code, please use the following command
     # cd src
     # mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/twitter-data-small.json
+    # mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')
     parser.add_argument('-dataset', type = str, help = 'Path to twitter dataset')
     parser.add_argument('-location', type = str, help = 'Path to a list of location code')
