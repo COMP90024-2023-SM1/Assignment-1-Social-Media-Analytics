@@ -142,7 +142,3 @@ def reformat_string(txt):
     else:
         result = txt
     return result.rstrip().lower()
-
-def is_end_of_tweet_record(line):
-    line = line.replace(" ", "")
-    return line == '},\n' or line == '}\n'
