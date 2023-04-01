@@ -46,7 +46,7 @@ module load python/3.7.4
 module load mpi4py/3.0.2-timed-pingpong
 
 # The job command(s):
-mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
+srun -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage

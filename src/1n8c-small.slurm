@@ -1,15 +1,15 @@
 #!/bin/bash
 # Created by the University of Melbourne job script generator for SLURM
-# Sat Apr 01 2023 14:47:41 GMT+1100 (澳大利亚东部夏令时间)
+# Sat Apr 01 2023 14:16:30 GMT+1100 (澳大利亚东部夏令时间)
 
 # Partition for the job:
 #SBATCH --partition=physical
 
 # Multithreaded (SMP) job: must run on one node 
-#SBATCH --nodes=2
+#SBATCH --nodes=1
 
 # The name of the job:
-#SBATCH --job-name="2n8c-small"
+#SBATCH --job-name="1n8c-small"
 
 # The project ID which this job should run under:
 #SBATCH --account="COMP90024"
@@ -17,7 +17,6 @@
 # Maximum number of tasks/CPU cores used by the job:
 #SBATCH --ntasks=8
 #SBATCH --cpus-per-task=1
-#SBATCH --ntasks-per-node=4
 
 # Use this email address:
 #SBATCH --mail-user=ztom@student.unimelb.edu.au

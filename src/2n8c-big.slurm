@@ -9,7 +9,7 @@
 #SBATCH --nodes=2
 
 # The name of the job:
-#SBATCH --job-name="2n8c-small"
+#SBATCH --job-name="2n8c-big"
 
 # The project ID which this job should run under:
 #SBATCH --account="COMP90024"
@@ -47,7 +47,7 @@ module load python/3.7.4
 module load mpi4py/3.0.2-timed-pingpong
 
 # The job command(s):
-srun -n 8 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
+srun -n 8 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/bigTwitter.json
 
 ##DO NOT ADD/EDIT BEYOND THIS LINE##
 ##Job monitor command to list the resource usage
