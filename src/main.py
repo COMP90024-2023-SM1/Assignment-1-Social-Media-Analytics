@@ -55,18 +55,15 @@ def main(geo_file_path, twitter_data_path):
     if RANK == 0:
         gcc_count_combined = Counter()
         user_count_combined = Counter()
-        city_count_combined = defaultdict(int)
+        city_count_combined = defaultdict(lambda: defaultdict(int))
 
         # Sum up the counter from each process
         for i in combined_results:
             gcc_count_combined += i['gcc_count']
             user_count_combined += i['user_count']
             for key, value in i['city_counter'].items():
-                if key in city_count_combined:
-                    for subkey, subvalue in value.items():
-                        city_count_combined[key][subkey] += subvalue
-                else:
-                    city_count_combined[key] = value
+                for subkey, subvalue in value.items():
+                    city_count_combined[key][subkey] += subvalue
 
         print("\n=================== Results ===================\n")
         print("Top 10 Tweeters")
