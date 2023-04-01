@@ -6,3 +6,4 @@ src/__pycache__/utils.cpython-39.pyc
 *.pyc
 src/temp.ipynb
 src/test.py
+data/smallTwitter.json
