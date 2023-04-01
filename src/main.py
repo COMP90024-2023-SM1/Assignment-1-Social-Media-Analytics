@@ -76,10 +76,10 @@ def main(geo_file_path, twitter_data_path):
         
 
 if __name__ == "__main__":
-    # To run the code, please use the following command
-    # cd src
-    # mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/twitter-data-small.json
-    # mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
+    # To run the code locally
+    ## mpiexec -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
+    # To run the code on spartan
+    ## srun -n 1 python -m mpi4py main.py -location ../data/sal.json -dataset ../data/smallTwitter.json
     parser = argparse.ArgumentParser(description = 'Social Media Analytics')
     parser.add_argument('-dataset', type = str, help = 'Path to twitter dataset')
     parser.add_argument('-location', type = str, help = 'Path to a list of location code')
