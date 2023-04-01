@@ -1,5 +1,10 @@
 import json
 
+STATE_ABRV_DICT = {'(nsw)': 'new south wales', '(vic.)': 'victoria', '(qld)': 'queensland', 
+                       '(nt)': 'northern territory', '(sa)': 'south australia', '(wa)': 'western australia', 
+                       '(tas.)': 'tasmania'}
+
+
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
     Divide the dataset into block for each individual process
@@ -67,27 +72,19 @@ def load_geo_location(file_path: str):
 
     Arguments:
     file_path --- path to the file
+    state_abrv_dict --- dictionary mapping state abbreviations to full names
     """
-    location_dict = {'1gsyd':[], '2gmel':[], '3gbri':[], '4gade':[], '5gper':[], '6ghob':[], '7gdar':[]}
-    state_abrv_dict = {'(nsw)': 'new south wales', '(vic.)': 'victoria', '(qld)': 'queensland', 
-                       '(nt)': 'northern territory', '(sa)': 'south australia', '(wa)': 'western australia', 
-                       '(tas.)': 'tasmania'}
-    with open(file_path, 'rb') as f:
+    location_dict = {'1gsyd': set(), '2gmel': set(), '3gbri': set(), '4gade': set(), '5gper': set(), '6ghob': set(), '7gdar': set()}
+ 
+    with open(file_path, 'r') as f:
         for location_name, value in json.load(f).items():
-
-            # Check if the location is within a greater capital city
-            if value['gcc'] in location_dict.keys():
+            gcc = value['gcc']
+            if gcc in location_dict:
                 if ' - ' in location_name:
                     new_name = location_name.split('(')[1].split(' - ')[0]
-                    location_dict[value['gcc']].append(new_name)
-                elif location_name.split(' ')[-1] in state_abrv_dict.keys():
-                    new_name = location_name[0:len(location_name) - len(location_name.split(' ')[-1]) - 1]
-                    new_name = new_name + ', ' + state_abrv_dict[location_name.split(' ')[-1]]
-                    location_dict[value['gcc']].append(new_name)
-                    #print(new_name)
                 else:
-                    location_dict[value['gcc']].append(location_name) 
-
+                    new_name = location_name
+                location_dict[gcc].add(new_name)
     return location_dict
 
 def load_tweet(file_path: str):
@@ -125,32 +122,23 @@ def print_most_common_user(user_counter):
         rank += 1
 
 def print_most_cities_count(city_counter):
-
     # define a custom key function to sort by number of items and sum of nested dictionary values
     def sort_key(item):
         return (-len(item[1]), -sum(item[1].values()))
 
     # sort the dictionary by custom key function and take the top 10 items
     sorted_dict_items = dict(sorted(city_counter.items(), key=sort_key)[:10])
+
     # iterate through the dictionary using a for loop
-    rank = 1
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Unique City Locations and #Tweets': ^15}")
-    for author_id, value in sorted_dict_items.items():
+    for rank, (author_id, value) in enumerate(sorted_dict_items.items(), start=1):
         total = sum(value.values())
-        str_breakdown = ''
-        i = 0
-        for place, number in value.items():
-            if i == 0:
-                str_breakdown = str_breakdown + str(number) + str(place)
-            else:
-                str_breakdown = str_breakdown + ',' + str(number) + str(place)
-            i += 1
-        print(f"{'#' + str(rank) : <8}{author_id : <30}{str(len(value)) + '(#' + str(total) + ' tweets - '}{str_breakdown + ')'}")
-        rank += 1
+        str_breakdown = ','.join(f"{number}{place}" for place, number in value.items())
+        print(f"{'#' + str(rank): <8}{author_id: <30}{str(len(value))}(#{total} tweets - {str_breakdown})")
+
 
 def fix_json(txt):
     # Get a substring between the first { and the last } in a string
-    start = txt.find('{')
-    end = txt.rfind('}') + 1
-    output = txt[start:end]
-    return output
+    if txt[0] != '{':
+        return txt[1:]
+    return txt

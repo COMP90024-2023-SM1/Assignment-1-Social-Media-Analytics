@@ -1,6 +1,6 @@
 import json
 
-from collections import Counter
+from collections import Counter, defaultdict
 from utils import extract_location, extract_user, load_geo_location, fix_json
 
 
@@ -14,7 +14,7 @@ class twitterData():
 
         self.location_counter = Counter()
         self.user_counter = Counter()
-        self.city_counter = dict()
+        self.city_counter = defaultdict(lambda: defaultdict(int))
 
     def process_tweet(self, tweet, location_dict):
         """
@@ -27,18 +27,14 @@ class twitterData():
 
         tweet_user = extract_user(tweet)
         self.user_counter[tweet_user] += 1
-        if tweet_user not in self.city_counter.keys():
-            self.city_counter[tweet_user] = dict()
 
-        gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
+        # gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
         tweet_location = extract_location(tweet)
+        city = tweet_location.split(',')[0]
         for gcc, location in location_dict.items():
-            if tweet_location in location or tweet_location.split(',')[0] in location:
+            if tweet_location in location or city in location:
                 self.location_counter[gcc] += 1
-                if gcc[1:] not in self.city_counter[tweet_user].keys():
-                    self.city_counter[tweet_user][gcc[1:]] = 1
-                else:
-                    self.city_counter[tweet_user][gcc[1:]] += 1
+                self.city_counter[tweet_user][gcc[1:]] += 1
                 break
 
 
@@ -80,4 +76,4 @@ class twitterData():
         """
         return {"gcc_count": self.location_counter, 
                 "user_count": self.user_counter, 
-                "city_counter": self.city_counter}
+                "city_counter": dict(self.city_counter)}
