@@ -152,7 +152,7 @@ def print_most_cities_count(city_counter):
 
 def fix_json(txt):
     # Get a substring between the first { and the last } in a string
-    start = txt.find('{') + 1
-    end = txt.rfind('}')
+    start = txt.find('{')
+    end = txt.rfind('}') + 1
     output = txt[start:end]
-    return '{' + output + '}'
+    return output
