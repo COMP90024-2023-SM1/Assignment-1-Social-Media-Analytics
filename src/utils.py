@@ -149,3 +149,10 @@ def print_most_cities_count(city_counter):
             i += 1
         print(f"{'#' + str(rank) : <8}{author_id : <30}{str(len(value)) + '(#' + str(total) + ' tweets - '}{str_breakdown + ')'}")
         rank += 1
+
+def fix_json(txt):
+    # Get a substring between the first { and the last } in a string
+    start = txt.find('{') + 1
+    end = txt.rfind('}')
+    output = txt[start:end]
+    return '{' + output + '}'

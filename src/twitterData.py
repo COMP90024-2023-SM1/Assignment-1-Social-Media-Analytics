@@ -3,7 +3,7 @@ import json
 import ijson
 
 from collections import Counter
-from utils import extract_location, extract_user, load_geo_location
+from utils import extract_location, extract_user, load_geo_location, fix_json
 
 
 class twitterData():
@@ -68,6 +68,7 @@ class twitterData():
                 # If reached the end of a tweet record
                 if line == '  },\n' or line == '  }\n':
                     one_tweet += line.split(',')[0]
+                    one_tweet = fix_json(one_tweet) # fix the format
                     self.process_tweet(json.loads(one_tweet), location_dict)
 
                     # Reset tweet after processed
