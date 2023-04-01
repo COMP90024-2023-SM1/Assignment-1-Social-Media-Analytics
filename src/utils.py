@@ -1,6 +1,4 @@
-import re
 import json
-import ijson
 
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
