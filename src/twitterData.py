@@ -1,6 +1,4 @@
-import re
 import json
-import ijson
 
 from collections import Counter
 from utils import extract_location, extract_user, load_geo_location, fix_json
