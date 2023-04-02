@@ -38,6 +38,7 @@ def create_block(file_path: str, dataset_size, size_per_core: int):
             # Add result to a generator    
             yield block_start, block_end
             if block_end == dataset_size:
+                block_end = f.tell()
                 break
 
 def load_geo_location(file_path: str):
@@ -57,11 +58,6 @@ def load_geo_location(file_path: str):
                 new_name = reformat_string(location_name)
                 location_dict[gcc].add(new_name)
     return location_dict
-
-def load_tweet(file_path: str):
-    with open(file_path, 'r') as tweet_file:
-        tweet = json.load(tweet_file)
-        return tweet
 
 def print_result_gcc_count(gcc_counter):
     """
@@ -106,13 +102,6 @@ def print_most_cities_count(city_counter):
         total = sum(value.values())
         str_breakdown = ','.join(f"{number}{place[1:]}" for place, number in value.items())
         print(f"{'#' + str(rank): <8}{author_id: <30}{str(len(value))}(#{total} tweets - {str_breakdown})")
-
-
-def fix_json(txt):
-    # Get a substring between the first { and the last } in a string
-    if txt[0] != '{':
-        return txt[1:]
-    return txt
 
 def reformat_string(txt):
     # Remove all non-alphanumeric characters & additioal spaces and convert to lowercase
