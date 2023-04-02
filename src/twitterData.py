@@ -13,7 +13,6 @@ class twitterData():
         """
 
         self.location_counter = Counter()
-        self.user_counter = Counter()
         self.city_counter = defaultdict(lambda: defaultdict(int))
 
     def process_tweet(self, tweet, location_dict):
@@ -24,10 +23,9 @@ class twitterData():
         Arguments:
         tweet --- a single tweet record in JSON format
         """
-        tweet_user = tweet[0]
-        self.user_counter[tweet_user] += 1
-
+        
         # gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
+        tweet_user = tweet[0]
         tweet_location = tweet[1]
         for gcc, location in location_dict.items():
             if tweet_location in location:
@@ -75,6 +73,5 @@ class twitterData():
         """
         This function returns the results in dictionary form
         """
-        return {"gcc_count": self.location_counter, 
-                "user_count": self.user_counter, 
+        return {"gcc_count": self.location_counter,
                 "city_counter": dict(self.city_counter)}

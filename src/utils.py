@@ -1,5 +1,6 @@
 import json
 import re
+from collections import defaultdict
 
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
@@ -49,14 +50,13 @@ def load_geo_location(file_path: str):
     Arguments:
     file_path --- path to the file
     """
-    location_dict = {'1gsyd': set(), '2gmel': set(), '3gbri': set(), '4gade': set(), '5gper': set(), '6ghob': set(), '7gdar': set()}
- 
+    location_dict = defaultdict(set)
+    
     with open(file_path, 'r') as f:
         for location_name, value in json.load(f).items():
             gcc = value['gcc']
-            if gcc in location_dict:
-                new_name = reformat_string(location_name)
-                location_dict[gcc].add(new_name)
+            new_name = reformat_string(location_name)
+            location_dict[gcc].add(new_name)
     return location_dict
 
 def print_result_gcc_count(gcc_counter):
@@ -72,7 +72,8 @@ def print_result_gcc_count(gcc_counter):
                  '7gdar': '(Greater Darwin)'}
     print(f"{'Greater Capital City': <30}{'Number of Tweets Made': >20}")
     for gcc, tweet_count in gcc_counter.most_common():
-        print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
+        if gcc in long_name.keys():
+            print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
 
 def print_most_common_user(user_counter):
     """
@@ -81,24 +82,33 @@ def print_most_common_user(user_counter):
     Arguments:
     user_counter --- counter for the users
     """
+    gcc_list = {'1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte'}
+    # Convert defaultdict to dict
+    user_counter = dict(user_counter)
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Tweets Made': ^15}")
+    top_k = 10
     rank = 1
-    user_counter = user_counter.most_common(10)
+    user_counter = sorted([(key, sum(val[k] for k in val if k in gcc_list)) for key, val in user_counter.items()], key=lambda x: x[1], reverse=True)[:top_k]
     for author_id, tweet_count in user_counter:
         print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
         rank += 1
 
 def print_most_cities_count(city_counter):
-    # define a custom key function to sort by number of items and sum of nested dictionary values
-    def sort_key(item):
-        return (-len(item[1]), -sum(item[1].values()))
+    gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
+    
+    # Convert defaultdict to dict
+    city_counter = dict(city_counter)
 
-    # sort the dictionary by custom key function and take the top 10 items
-    sorted_dict_items = dict(sorted(city_counter.items(), key=sort_key)[:10])
+    # Remove items with keys not in gcc_list
+    city_counter = {k: {k2: v2 for k2, v2 in v.items() if k2 in gcc_list} for k, v in city_counter.items()}
+
+    # Sort items based on the number of unique cities and the sum of the tweets
+    top_k = 10
+    city_counter = dict(sorted(city_counter.items(), key=lambda x: (len(x[1]), sum(x[1].values())), reverse=True)[:top_k])
 
     # iterate through the dictionary using a for loop
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Unique City Locations and #Tweets': ^15}")
-    for rank, (author_id, value) in enumerate(sorted_dict_items.items(), start=1):
+    for rank, (author_id, value) in enumerate(city_counter.items(), start=1):
         total = sum(value.values())
         str_breakdown = ','.join(f"{number}{place[1:]}" for place, number in value.items())
         print(f"{'#' + str(rank): <8}{author_id: <30}{str(len(value))}(#{total} tweets - {str_breakdown})")
