@@ -24,12 +24,11 @@ class twitterData():
         Arguments:
         tweet --- a single tweet record in JSON format
         """
-
-        tweet_user = extract_user(tweet)
+        tweet_user = tweet[0]
         self.user_counter[tweet_user] += 1
 
         # gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
-        tweet_location = extract_location(tweet)
+        tweet_location = tweet[1]
         for gcc, location in location_dict.items():
             if tweet_location in location:
                 self.location_counter[gcc] += 1
@@ -50,24 +49,27 @@ class twitterData():
         location_dict = load_geo_location(geo_file_path)
 
         with open(file_path, 'rb') as file:
-            one_tweet = ''
+            tweet = []
             if block_start == 0:
                 block_start = 4
-            
             file.seek(block_start)
+            pattern_author_id = r'"author_id":\s*"(\d+)"'
+            pattern_city = r'"full_name": "([^"]+)"'
             while file.tell() != block_end:
+                # Read the file line by line, treat them as string rather than json
                 line = file.readline().decode('utf-8')
-
-                # If reached the end of a tweet record
-                if line == '  },\n' or line == '  }\n':
-                    one_tweet += line.split(',')[0]
-                    one_tweet = fix_json(one_tweet) # fix the format
-                    self.process_tweet(json.loads(one_tweet), location_dict)
-
-                    # Reset tweet after processed
-                    one_tweet = ''
-                else:
-                    one_tweet += line
+                if ('author_id' in line): # If author_id is in the line, extract the author_id
+                    match_author_id = re.search(pattern_author_id, line)
+                    if match_author_id:
+                        author_id = match_author_id.group(1)
+                        tweet.append(author_id)
+                elif ('full_name' in line): # If full_name is in the line, extract the city
+                    match_city = re.search(pattern_city, line)
+                    if match_city:
+                        city = match_city.group(1)
+                        tweet.append(reformat_string(city))
+                        self.process_tweet(tweet, location_dict)
+                        tweet = []
                     
     def get_processed_result(self):
         """

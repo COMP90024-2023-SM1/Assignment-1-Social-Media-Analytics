@@ -40,27 +40,6 @@ def create_block(file_path: str, dataset_size, size_per_core: int):
             if block_end == dataset_size:
                 break
 
-def extract_location(tweet):
-    """
-    Extract the location of a given tweet
-
-    Arguments:
-    tweet --- tweet in JSON format
-    """
-    location = tweet['includes']['places'][0]['full_name']
-    return reformat_string(location)
-
-
-def extract_user(tweet):
-    """
-    Extract the user of a given tweet
-
-    Arguments:
-    tweet --- tweet in JSON format
-    """
-    author_id = tweet['data']['author_id']
-    return author_id
-
 def load_geo_location(file_path: str):
     """
     This function returns a dictionary of the area names in each
