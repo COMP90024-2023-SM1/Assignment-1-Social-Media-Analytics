@@ -136,6 +136,7 @@ def fix_json(txt):
     return txt
 
 def reformat_string(txt):
+    # Remove all non-alphanumeric characters & additioal spaces and convert to lowercase
     match = re.search(r'[^\w\s]', txt)
     if match:
         result = txt[:match.start()]
