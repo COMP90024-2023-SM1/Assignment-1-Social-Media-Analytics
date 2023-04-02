@@ -61,8 +61,8 @@ def main(geo_file_path, twitter_data_path):
             gcc_count_combined += i['gcc_count']
             user_count_combined += i['user_count']
             for key, value in i['city_counter'].items():
-                for subkey, subvalue in value.items():
-                    city_count_combined[key][subkey] += subvalue
+                for subkey in value:
+                    city_count_combined[key][subkey] += value[subkey]
 
         print("\n=================== Results ===================\n")
         print("Top 10 Tweeters")
