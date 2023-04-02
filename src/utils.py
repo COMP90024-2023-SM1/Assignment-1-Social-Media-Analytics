@@ -49,7 +49,8 @@ def load_geo_location(file_path: str):
     Arguments:
     file_path --- path to the file
     """
-    location_dict = {'1gsyd': set(), '2gmel': set(), '3gbri': set(), '4gade': set(), '5gper': set(), '6ghob': set(), '7gdar': set()}
+    location_dict = {'1gsyd': set(), '2gmel': set(), '3gbri': set(), '4gade': set(),
+                     '5gper': set(), '6ghob': set(), '7gdar': set(), '8acte': set()}
  
     with open(file_path, 'r') as f:
         for location_name, value in json.load(f).items():
@@ -69,7 +70,7 @@ def print_result_gcc_count(gcc_counter):
     long_name = {'1gsyd': '(Greater Sydney)', '2gmel': '(Greater Melbourne)',
                  '3gbri': '(Greater Brisbane)', '4gade': '(Greater Adelaide)',
                  '5gper': '(Greater Perth)', '6ghob': '(Greater Hobart)',
-                 '7gdar': '(Greater Darwin)'}
+                 '7gdar': '(Greater Darwin)', '8acte': '(Greater Canberra)'}
     print(f"{'Greater Capital City': <30}{'Number of Tweets Made': >20}")
     for gcc, tweet_count in gcc_counter.most_common():
         print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
