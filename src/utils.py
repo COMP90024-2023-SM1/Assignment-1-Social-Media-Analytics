@@ -61,6 +61,11 @@ def load_geo_location(file_path: str):
             if location_name.split(' ')[-1] in STATE_ABRV_DICT.keys():
                     new_name = location_name[0:len(location_name) - len(location_name.split(' ')[-1]) - 1]
                     new_name = reformat_string(new_name + ' ' + STATE_ABRV_DICT[location_name.split(' ')[-1]])
+            elif ' - ' in location_name:
+                    new_name = location_name.split('(')
+                    if len(new_name) == 1:
+                        continue
+                    new_name = reformat_string(new_name[1].split(' - ')[0])
             else:
                 new_name = reformat_string(location_name)
             location_dict[gcc].add(new_name)
