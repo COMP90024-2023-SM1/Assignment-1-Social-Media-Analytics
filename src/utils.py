@@ -83,9 +83,11 @@ def print_result_gcc_count(gcc_counter):
                  '5gper': '(Greater Perth)', '6ghob': '(Greater Hobart)',
                  '7gdar': '(Greater Darwin)'}
     print(f"{'Greater Capital City': <30}{'Number of Tweets Made': >20}")
+    rank = 1
     for gcc, tweet_count in gcc_counter.most_common():
         if gcc in long_name.keys():
-            print(f"{gcc + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
+            print(f"{str(rank) + gcc[1:] + ' ' + long_name[gcc] : <30}{tweet_count : >12}")
+            rank += 1
 
 def print_most_common_user(user_counter):
     """
