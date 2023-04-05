@@ -1,0 +1,65 @@
+Hello world from process 1 of 1
+RANK #0 responsible for block between byte 0 and byte 18735307060
+
+=================== Results ===================
+
+Top 10 Tweeters
+Rank    Author ID                     Number of Tweets Made
+#1      1498063511204761601                68477     
+#2      1089023364973219840                28128     
+#3      826332877457481728                 27690     
+#4      1250331934242123776                25329     
+#5      1423662808311287813                21030     
+#6      1183144981252280322                20653     
+#7      820431428835885059                 20063     
+#8      1270672820792508417                19801     
+#9      233782487                          18181     
+#10     1104295492433764353                18158     
+
+Total Number of Tweets in Various Capital Cities
+Greater Capital City          Number of Tweets Made
+2gmel (Greater Melbourne)          2271776
+1gsyd (Greater Sydney)             2106029
+3gbri (Greater Brisbane)            850285
+5gper (Greater Perth)               586710
+4gade (Greater Adelaide)            461157
+6ghob (Greater Hobart)               83874
+7gdar (Greater Darwin)               46328
+
+Top 10 Number of Unique City Locations and #Tweets
+Rank    Author ID                     Number of Unique City Locations and #Tweets
+#1      1429984556451389440           7(#1889 tweets - 1862gmel,2gade,7gper,10gsyd,6gbri,1ghob,1gdar)
+#2      17285408                      7(#1158 tweets - 1033gsyd,40gbri,60gmel,11ghob,3gade,4gdar,7gper)
+#3      702290904460169216            7(#1032 tweets - 235gmel,114gade,208gbri,34ghob,17gdar,273gsyd,151gper)
+#4      87188071                      7(#358 tweets - 28gade,64gbri,52gper,109gsyd,86gmel,14ghob,5gdar)
+#5      1361519083                    7(#253 tweets - 36gmel,193gdar,11gsyd,9gade,1gper,2ghob,1gbri)
+#6      502381727                     7(#240 tweets - 214gmel,8gbri,8ghob,3gper,4gade,2gsyd,1gdar)
+#7      921197448885886977            7(#196 tweets - 37gbri,24gade,28gper,46gsyd,56gmel,4ghob,1gdar)
+#8      1382217768649465858           7(#189 tweets - 50gmel,13gade,50ghob,14gbri,8gdar,43gper,11gsyd)
+#9      601712763                     7(#136 tweets - 44gsyd,39gmel,1gdar,14gper,8ghob,19gade,11gbri)
+#10     2647302752                    7(#76 tweets - 32gbri,3gdar,3gade,4gper,13gsyd,16gmel,5ghob)
+
+PROGRAM RUN TIME: 718.936603307724
+Job ID           : 46115188
+Cluster          : spartan
+User/Project     : ztom/comp90024
+Nodes            : 1
+Wall-clock time  : 00:12:05 / 01:00:00
+
+Displaying overall resources usage from 2023-04-05 22:06:29 to 2023-04-05 22:18:34:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-bm021 : 
+                CPU# 1    : 96.8   (  87.3 /   9.5 /   0.0 /   3.2 ) 
+
+
+Allocated CPUs            : 1    
+  CPUs with usage <25%    : 0    
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 1    
+
+Memory used (RAM)         : 0.1%  [5MB of 4000MB]
+
+--------------------------------------------
+
