@@ -28,7 +28,7 @@ class twitterData():
         tweet_user = tweet[0]
         tweet_location = tweet[1]
         for gcc, location in location_dict.items():
-            if tweet_location in location or tweet_location.split(' ')[0] in location:
+            if tweet_location in location or tweet_location.split(' ')[0] in location or tweet_location.split(',')[0] in location:
                 self.location_counter[gcc] += 1
                 self.city_counter[tweet_user][gcc] += 1
                 break

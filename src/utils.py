@@ -126,6 +126,6 @@ def print_most_cities_count(city_counter):
 
 def reformat_string(txt):
     # Remove all non-alphanumeric characters & additioal spaces and convert to lowercase
-    txt = re.sub(r'[^a-zA-Z0-9\s]', ' ', txt).lower()
+    txt = re.sub(r'[^a-zA-Z0-9,\s]', ' ', txt).lower()
     txt = re.sub(r'\s+', ' ', txt).strip()
     return txt
