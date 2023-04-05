@@ -2,8 +2,13 @@ import json
 import re
 from collections import defaultdict
 
-STATE_ABRV_DICT = {'(nsw)': 'New South Wales', '(vic.)': 'Victoria', '(qld)': 'Queensland', 
-                       '(sa)': 'South Australia', '(wa)': 'Western Australia', '(tas.)': 'Tasmania'}
+STATE_ABRV_DICT = {'(nsw)': 'new south wales', 
+                   '(vic.)': 'cictoria', 
+                   '(qld)': 'queensland', 
+                   '(sa)': 'south australia', 
+                   '(wa)': 'western australia', 
+                   '(tas.)': 'tasmania', 
+                   '(nt)': 'northern territory'}
 
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
