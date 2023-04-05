@@ -2,6 +2,9 @@ import json
 import re
 from collections import defaultdict
 
+STATE_ABRV_DICT = {'(nsw)': 'New South Wales', '(vic.)': 'Victoria', '(qld)': 'Queensland', 
+                       '(sa)': 'South Australia', '(wa)': 'Western Australia', '(tas.)': 'Tasmania'}
+
 def create_block(file_path: str, dataset_size, size_per_core: int):
     """
     Divide the dataset into block for each individual process
@@ -53,9 +56,13 @@ def load_geo_location(file_path: str):
     location_dict = defaultdict(set)
     
     with open(file_path, 'r') as f:
-        for location_name, value in json.load(f).items():
+        for location_name, value in json.load(f).items(): 
             gcc = value['gcc']
-            new_name = reformat_string(location_name)
+            if location_name.split(' ')[-1] in STATE_ABRV_DICT.keys():
+                    new_name = location_name[0:len(location_name) - len(location_name.split(' ')[-1]) - 1]
+                    new_name = reformat_string(new_name + ' ' + STATE_ABRV_DICT[location_name.split(' ')[-1]])
+            else:
+                new_name = reformat_string(location_name)
             location_dict[gcc].add(new_name)
     return location_dict
 
@@ -82,13 +89,12 @@ def print_most_common_user(user_counter):
     Arguments:
     user_counter --- counter for the users
     """
-    gcc_list = {'1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte'}
     # Convert defaultdict to dict
     user_counter = dict(user_counter)
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Tweets Made': ^15}")
     top_k = 10
     rank = 1
-    user_counter = sorted([(key, sum(val[k] for k in val if k in gcc_list)) for key, val in user_counter.items()], key=lambda x: x[1], reverse=True)[:top_k]
+    user_counter = sorted([(key, sum(values[k] for k in values)) for key, values in user_counter.items()], key=lambda x: x[1], reverse=True)[:top_k]
     for author_id, tweet_count in user_counter:
         print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
         rank += 1
@@ -115,9 +121,6 @@ def print_most_cities_count(city_counter):
 
 def reformat_string(txt):
     # Remove all non-alphanumeric characters & additioal spaces and convert to lowercase
-    match = re.search(r'[^\w\s]', txt)
-    if match:
-        result = txt[:match.start()]
-    else:
-        result = txt
-    return result.rstrip().lower()
+    txt = re.sub(r'[^a-zA-Z0-9\s]', ' ', txt).lower()
+    txt = re.sub(r'\s+', ' ', txt).strip()
+    return txt

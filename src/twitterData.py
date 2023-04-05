@@ -28,7 +28,10 @@ class twitterData():
         tweet_user = tweet[0]
         tweet_location = tweet[1]
         for gcc, location in location_dict.items():
-            if tweet_location in location:
+            if tweet_location in location or tweet_location.split(' ')[0] in location:
+                if tweet_user == '702290904460169216':
+                    print('Process:', tweet_location, gcc)
+                    print('---------')
                 self.location_counter[gcc] += 1
                 self.city_counter[tweet_user][gcc] += 1
                 break
@@ -65,7 +68,11 @@ class twitterData():
                     match_city = re.search(pattern_city, line)
                     if match_city:
                         city = match_city.group(1)
+                        if '702290904460169216' in tweet:
+                            print('Load:',city)
                         tweet.append(reformat_string(city))
+                        if '702290904460169216' in tweet:
+                            print('Formatted:', reformat_string(city))
                         self.process_tweet(tweet, location_dict)
                         tweet = []
                     
