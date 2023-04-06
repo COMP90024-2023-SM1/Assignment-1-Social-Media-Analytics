@@ -1,0 +1,89 @@
+Hello world from process 2 of 8
+RANK #1 responsible for block between byte 2341914393 and byte 4683828530
+Hello world from process 5 of 8
+RANK #4 responsible for block between byte 9367657032 and byte 11709571864
+Hello world from process 6 of 8
+RANK #5 responsible for block between byte 11709571864 and byte 14051485394
+Hello world from process 7 of 8
+RANK #6 responsible for block between byte 14051485394 and byte 16393400928
+Hello world from process 8 of 8
+RANK #7 responsible for block between byte 16393400928 and byte 18735307060
+Hello world from process 3 of 8
+RANK #2 responsible for block between byte 4683828530 and byte 7025743038
+Hello world from process 4 of 8
+RANK #3 responsible for block between byte 7025743038 and byte 9367657032
+Hello world from process 1 of 8
+RANK #0 responsible for block between byte 0 and byte 2341914393
+
+=================== Results ===================
+
+Top 10 Tweeters
+Rank    Author ID                     Number of Tweets Made
+#1      1498063511204761601                68477     
+#2      1089023364973219840                28128     
+#3      826332877457481728                 27581     
+#4      1250331934242123776                25345     
+#5      1423662808311287813                21030     
+#6      1183144981252280322                20652     
+#7      1270672820792508417                20502     
+#8      820431428835885059                 20063     
+#9      233782487                          18185     
+#10     1104295492433764353                17561     
+
+Total Number of Tweets in Various Capital Cities
+Greater Capital City          Number of Tweets Made
+1gmel (Greater Melbourne)          2279689
+2gsyd (Greater Sydney)             2216307
+3gbri (Greater Brisbane)            853687
+4gper (Greater Perth)               589188
+5gade (Greater Adelaide)            452469
+6acte (Greater Canberra)            194541
+7ghob (Greater Hobart)               89970
+8gdar (Greater Darwin)               46364
+
+Top 10 Number of Unique City Locations and #Tweets
+Rank    Author ID                     Number of Unique City Locations and #Tweets
+#1      1429984556451389440           8(#1909 tweets - 1868gmel,2gade,13acte,7gper,11gsyd,6gbri,1ghob,1gdar)
+#2      17285408                      8(#1189 tweets - 1041gsyd,40gbri,23acte,60gmel,11ghob,3gade,4gdar,7gper)
+#3      702290904460169216            8(#1173 tweets - 247gmel,120gade,44acte,222gbri,19gdar,330gsyd,152gper,39ghob)
+#4      87188071                      8(#397 tweets - 28gade,64gbri,52gper,114gsyd,34acte,15ghob,85gmel,5gdar)
+#5      1361519083                    8(#266 tweets - 36gmel,193gdar,18gsyd,9gade,1gper,6acte,2ghob,1gbri)
+#6      502381727                     8(#250 tweets - 214gmel,8gbri,8ghob,3gper,4gade,2gsyd,1gdar,10acte)
+#7      921197448885886977            8(#201 tweets - 37gbri,20gade,28gper,49gsyd,56gmel,6acte,4ghob,1gdar)
+#8      601712763                     8(#146 tweets - 44gsyd,10acte,39gmel,1gdar,14gper,8ghob,19gade,11gbri)
+#9      2647302752                    8(#80 tweets - 32gbri,3gdar,3gade,4gper,4acte,13gsyd,16gmel,5ghob)
+#10     3686036533                    7(#2584 tweets - 1547gmel,403gsyd,226acte,84ghob,91gbri,47gade,186gper)
+
+PROGRAM RUN TIME: 100.60524463653564
+Job ID           : 46140952
+Cluster          : spartan
+User/Project     : ztom/comp90024
+Nodes            : 2
+Wall-clock time  : 00:01:47 / 01:00:00
+
+Displaying overall resources usage from 2023-04-06 15:54:33 to 2023-04-06 15:56:21:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-bm095 : 
+                CPU# 1    : 98.3   (  87.4 /  10.8 /   0.0 /   1.7 ) 
+                CPU# 2    : 96.0   (  86.9 /   9.1 /   0.0 /   4.0 ) 
+                CPU# 3    : 95.2   (  85.3 /   9.9 /   0.0 /   4.8 ) 
+                CPU# 4    : 95.1   (  85.3 /   9.8 /   0.0 /   4.9 ) 
+
+spartan-bm103 : 
+                CPU# 5    : 83.5   (  75.1 /   8.4 /   0.0 /  16.5 ) 
+                CPU# 6    : 83.5   (  74.8 /   8.7 /   0.0 /  16.5 ) 
+                CPU# 7    : 83.5   (  75.0 /   8.4 /   0.0 /  16.5 ) 
+                CPU# 8    : 83.7   (  74.6 /   9.1 /   0.0 /  16.3 ) 
+
+
+Allocated CPUs            : 8    
+  CPUs with usage <25%    : 0    
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 8    
+
+Memory used (RAM)         : 0.0%  [5MB of 32000MB]
+
+--------------------------------------------
+
