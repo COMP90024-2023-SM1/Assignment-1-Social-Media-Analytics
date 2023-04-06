@@ -112,7 +112,7 @@ def print_most_common_user(user_counter):
         rank += 1
 
 def print_most_cities_count(city_counter):
-    gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar']
+    gcc_list = ['1gsyd', '2gmel', '3gbri', '4gade', '5gper', '6ghob', '7gdar', '8acte']
     
     # Convert defaultdict to dict
     city_counter = dict(city_counter)
