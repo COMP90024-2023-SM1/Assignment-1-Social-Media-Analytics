@@ -101,7 +101,8 @@ def print_most_common_user(user_counter):
     print(f"{'Rank': <8}{'Author ID': <30}{'Number of Tweets Made': ^15}")
     top_k = 10
     rank = 1
-    user_counter = sorted([(key, sum(values[k] for k in values)) for key, values in user_counter.items()], key=lambda x: x[1], reverse=True)[:top_k]
+    user_counter = sorted(user_counter.items(), key=lambda x: x[1]['all'], reverse=True)
+    user_counter = [(k, v['all']) for k, v in user_counter][:top_k]
     for author_id, tweet_count in user_counter:
         print(f"{'#' + str(rank) : <8}{author_id : <30}{tweet_count : ^15}")
         rank += 1
